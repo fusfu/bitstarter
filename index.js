@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', function(request, response) {
 	var fs = require('fs');
 	var infile = "./index.html";
-	var buf= fs.readFile(infile);
+	var buf= fs.readFileSync(infile);
 	response.send(buf.toString('ascii'));
 //  response.send('Hello World from MKT!')
 })
