@@ -33,6 +33,7 @@ var assertUrlExists = function (val) {return val.toString();};
 
 var callThis = function(result) {
     if (data instanceof Error) {
+	console.log("callThis timeout")
         sys.puts('Error: ' + result.message);
         this.retry(5000); // try again after 5 sec
     } else {
@@ -78,12 +79,12 @@ if(require.main == module) {
     program
         .option('-c, --checks <check_file>', 'checks.json', clone(assertFileExists), CHECKSFILE_DEFAULT)
         .option('-f, --file <html_file>','index.html', clone(assertFileExists), HTMLFILE_DEFAULT)
-        .option('-u, --url <url>', 'url to check', URL_DEFAULT)
+        .option('-u, --url <url_path>', 'url to check', clone(assertUrlExists), URL_DEFAULT)
         .parse(process.argv);
     if (program.url) {
-	console.log("~~~~~~~~~~~~~~~ DEBUG")
-	console.log(program.url)
-	console.log("~~~~~~~~~~~~~~~ END DEBUG")
+	console.log("~~~~~~~~~~~~~~~ DEBUG URL");
+	console.log(program.url);
+	console.log("~~~~~~~~~~~~~~~ END DEBUG");
         rest.get(program.url).on('complete', function(result) {
             fs.writeFileSync("myurl.html", result);   // Added this line
             var checkJson = checkHtmlFile("myurl.html", program.checks);
@@ -92,10 +93,12 @@ if(require.main == module) {
         });
 
     } else if (program.file) {
+	console.log("~~~~~~~~~~~~~~~ DEBUG FILE");
         var checkJson = checkHtmlFile(program.file, program.checks);
         var outJson = JSON.stringify(checkJson, null, 4);
         console.log(outJson);
     } else {
 	exports.checkHtmlFile = checkHtmlFile;
+    }
 }
 
