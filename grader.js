@@ -33,7 +33,7 @@ var assertUrlExists = function (val) {return val.toString();};
 
 var callThis = function(result) {
     if (data instanceof Error) {
-	console.log("callThis timeout")
+	console.log("callThis timeout");
         sys.puts('Error: ' + result.message);
         this.retry(5000); // try again after 5 sec
     } else {
